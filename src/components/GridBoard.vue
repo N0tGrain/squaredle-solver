@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import {nextTick, ref, reactive, onMounted} from 'vue'
-import type {Grid, Cell} from "@/types/grid";
+import { reactive, ref, nextTick } from 'vue'
+import GridCell from './GridCell.vue'
 
-const element = ref()
-onMounted(() => {
-  focusCell(0, 0)
-})
+import type { Grid, Cell } from '@/types/grid'
 
-const GRID_SIZE = 5;
+const GRID_SIZE = 5
 
 function createGrid(size: number): Grid {
-  return Array.from({length: size}, (_, row) =>
-    Array.from({length: size}, (_, col): Cell => ({
+  return Array.from({ length: size }, (_, row) =>
+    Array.from({ length: size }, (_, col): Cell => ({
       row,
       col,
       letter: '',
@@ -21,48 +18,54 @@ function createGrid(size: number): Grid {
 }
 
 const grid = reactive<Grid>(createGrid(GRID_SIZE))
+
 const inputRefs = ref<HTMLInputElement[][]>([])
 
-function setInputRef(element: HTMLInputElement | null, row: number, col: number) {
-  if (!element) return;
+function setInputRef(el: HTMLInputElement | null, row: number, col: number,
+) {
+  if (!el) return
   if (!inputRefs.value[row]) {
     inputRefs.value[row] = []
   }
-  inputRefs.value[row][col] = element;
+  inputRefs.value[row][col] = el
 }
 
-function focusCell(row:number, col:number) {
+function focusCell(row: number, col: number) {
   const cell = grid[row]?.[col]
-  if (!cell || cell.disabled) return;
-
+  if (!cell || cell.disabled) return
   nextTick(() => {
-    inputRefs.value[row]?.[col]?.focus();
+    inputRefs.value[row]?.[col]?.focus()
   })
 }
 
 function toggleDisabled(cell: Cell) {
-  cell.disabled = !cell.disabled;
+  cell.disabled = !cell.disabled
   if (cell.disabled) {
-    cell.letter = '';
+    cell.letter = ''
   }
 }
 
 function updateLetter(cell: Cell, event: Event) {
-  const target = event.target as HTMLInputElement;
-  const value = target.value.replace(/[^a-zA-Z]/g, '').slice(0, 1).toUpperCase()
-  cell.letter = value;
+  const target = event.target as HTMLInputElement
+  const value = target.value
+    .replace(/[^a-zA-Z]/g, '')
+    .slice(0, 1)
+    .toUpperCase()
+
+  cell.letter = value
   if (value) {
     moveToNextCell(cell.row, cell.col)
   }
 }
 
 function moveToNextCell(row: number, col: number) {
-  let currentCol = col + 1;
-  let currentRow = row;
+  let currentCol = col + 1
+  let currentRow = row
 
   while (currentRow < GRID_SIZE) {
     while (currentCol < GRID_SIZE) {
       const nextCell = grid[currentRow][currentCol]
+
       if (!nextCell.disabled) {
         focusCell(currentRow, currentCol)
         return
@@ -76,11 +79,12 @@ function moveToNextCell(row: number, col: number) {
 
 function moveToPreviousCell(row: number, col: number) {
   let currentCol = col - 1
-  let currentRow = row;
+  let currentRow = row
 
   while (currentRow >= 0) {
     while (currentCol >= 0) {
       const prevCell = grid[currentRow][currentCol]
+
       if (!prevCell.disabled) {
         focusCell(currentRow, currentCol)
         return
@@ -98,18 +102,22 @@ function handleKeyDown(event: KeyboardEvent, cell: Cell) {
       event.preventDefault()
       focusCell(cell.row - 1, cell.col)
       break
+
     case 'ArrowDown':
       event.preventDefault()
       focusCell(cell.row + 1, cell.col)
       break
+
     case 'ArrowLeft':
       event.preventDefault()
       focusCell(cell.row, cell.col - 1)
       break
+
     case 'ArrowRight':
       event.preventDefault()
       focusCell(cell.row, cell.col + 1)
       break
+
     case 'Backspace':
       if (!cell.letter) {
         moveToPreviousCell(cell.row, cell.col)
@@ -117,31 +125,28 @@ function handleKeyDown(event: KeyboardEvent, cell: Cell) {
       break
   }
 }
-
 </script>
 
 <template>
+
   <div class="board">
-    <div
+    <GridCell
       v-for="cell in grid.flat()"
       :key="`${cell.row}-${cell.col}`"
-    >
-      <input
-        :ref="(el) => setInputRef(el as HTMLInputElement, cell.row, cell.col)"
-        :value="cell.letter"
-        :disabled="cell.disabled"
-        maxlength="1"
-        class="cell"
-        :class="{ disabled: cell.disabled }"
-        @input="updateLetter(cell, $event)"
-        @keydown="handleKeyDown($event, cell)"
-        @dblclick="toggleDisabled(cell)"
-      />
-    </div>
+      :ref="(component) => {
+        const gridCell = component as InstanceType<typeof GridCell>
+        setInputRef(gridCell?.element as HTMLInputElement, cell.row, cell.col)
+      }"
+      :cell="cell"
+      @input="updateLetter(cell, $event)"
+      @keydown="handleKeyDown($event, cell)"
+      @toggle="toggleDisabled(cell)"/>
   </div>
+
 </template>
 
 <style scoped>
+
 .board {
   display: grid;
   grid-template-columns: repeat(5, 70px);
@@ -156,30 +161,4 @@ function handleKeyDown(event: KeyboardEvent, cell: Cell) {
   align-items: center;
 }
 
-.cell {
-  width: 70px;
-  height: 70px;
-  border: 2px solid #d1d5db;
-  border-radius: 14px;
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  background: white;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.cell:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
-}
-
-.cell:disabled {
-  background: #1f2937;
-  border-color: #1f2937;
-  color: transparent;
-  cursor: not-allowed;
-}
 </style>
