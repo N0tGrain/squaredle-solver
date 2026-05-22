@@ -2,6 +2,9 @@
 
 import {useGrid} from "@/composables/useGrid";
 import GridCell from "@/components/GridCell.vue";
+import {ref} from "vue";
+import {Cell} from "@/types/grid";
+import {getNeighbours} from "@/utils/neighbours";
 
 const {
   grid,
@@ -10,6 +13,18 @@ const {
   updateLetter,
   handleKeyDown,
 } = useGrid(5)
+
+const highlightedCells = ref<Cell[]>([])
+
+function highlightNeighbours(cell: Cell) {
+  highlightedCells.value = getNeighbours(grid, cell.row, cell.col)
+}
+
+function isHighlighted(cell: Cell) {
+  return highlightedCells.value.some((highlightedCell) =>
+    highlightedCell.row === cell.row && highlightedCell.col === cell.col,
+  )
+}
 
 </script>
 
@@ -24,6 +39,8 @@ const {
         setInputRef(gridCell?.element as HTMLInputElement, cell.row, cell.col)
       }"
       :cell="cell"
+      :highlighted="isHighlighted(cell)"
+      @mouseEnter="highlightNeighbours(cell)"
       @input="updateLetter(cell, $event)"
       @keydown="handleKeyDown($event, cell)"
       @toggle="toggleDisabled(cell)"/>

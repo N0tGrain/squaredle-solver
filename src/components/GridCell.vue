@@ -3,7 +3,7 @@
 import type {Cell} from "@/types/grid";
 import {ref} from "vue";
 
-const props = defineProps<{cell: Cell}>()
+const props = defineProps<{cell: Cell, highlighted: boolean}>()
 const emit = defineEmits<{
   input: [event: Event]
   keydown: [event: KeyboardEvent]
@@ -22,7 +22,7 @@ defineExpose({element})
     :disabled="props.cell.disabled"
     maxlength="1"
     class="cell"
-    :class="{disabled: props.cell.disabled}"
+    :class="{disabled: props.cell.disabled, highlighted: highlighted}"
     @input="emit('input', $event)"
     @keydown="emit('keydown', $event)"
     @dblclick="emit('toggle')"
@@ -56,6 +56,12 @@ defineExpose({element})
   border-color: #1f2937;
   color: transparent;
   cursor: not-allowed;
+}
+
+
+.highlighted {
+  border-color: #22c55e;
+  background: #dcfce7;
 }
 
 </style>
