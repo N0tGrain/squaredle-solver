@@ -132,6 +132,15 @@ export function useGrid(size: number = 5) {
     }
   }
 
+  function resetGrid() {
+    for (const row of grid) {
+      for (const cell of row) {
+        cell.letter = ''
+        cell.disabled = false
+      }
+    }
+  }
+
   return {
     grid,
     setInputRef,
@@ -139,5 +148,6 @@ export function useGrid(size: number = 5) {
     toggleDisabled,
     updateLetter,
     handleKeyDown,
+    resetGrid,
   }
 }

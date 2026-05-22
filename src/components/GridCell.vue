@@ -32,38 +32,37 @@ defineExpose({element})
 <style scoped>
 
 .cell {
-  width: 70px;
-  height: 70px;
-  border: 2px solid #d1d5db;
-  border-radius: 14px;
-  font-size: 2rem;
-  font-weight: bold;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
   text-align: center;
   text-transform: uppercase;
-  background: white;
-  transition: all 0.2s ease;
+  background: var(--color-background);
+  color: var(--color-heading);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
   cursor: pointer;
 }
 
 .cell:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+  border-color: var(--vt-c-indigo);
+  box-shadow: 0 0 0 4px rgba(44, 62, 80, 0.12);
 }
 
 .cell:disabled {
-  background: #1f2937;
-  border-color: #1f2937;
+  background: var(--vt-c-black-soft);
+  border-color: var(--vt-c-black-soft);
   color: transparent;
   cursor: not-allowed;
 }
 
-
 .highlighted {
-  background: #fde68a;
-  border-color: #f59e0b;
-  transform: scale(1.05);
-  transition: all 0.15s ease;
+  background: rgba(44, 62, 80, 0.08);
+  border-color: var(--vt-c-indigo);
+  transform: translateY(-1px);
 }
 
 </style>
