@@ -5,7 +5,7 @@ import GridCell from "@/components/GridCell.vue";
 import {ref} from "vue";
 import {Cell} from "@/types/grid";
 import {getNeighbours} from "@/utils/neighbours";
-import {findAllPaths} from "@/utils/dfs";
+import {useSolver} from "@/composables/useSolver";
 
 const {
   grid,
@@ -16,21 +16,21 @@ const {
 } = useGrid(5)
 
 const highlightedCells = ref<Cell[]>([])
+const { solve } = useSolver()
 
 function highlightNeighbours(cell: Cell) {
   highlightedCells.value = getNeighbours(grid, cell.row, cell.col)
+}
+
+function onSolve() {
+  const results = solve(grid)
+  console.log(results)
 }
 
 function isHighlighted(cell: Cell) {
   return highlightedCells.value.some((highlightedCell) =>
     highlightedCell.row === cell.row && highlightedCell.col === cell.col,
   )
-}
-
-function solve() {
-  console.log('TEST')
-  const results = findAllPaths(grid)
-  console.log('paths:', results)
 }
 
 </script>
@@ -53,7 +53,7 @@ function solve() {
       @toggle="toggleDisabled(cell)"/>
   </div>
 
-  <button @click="solve()">Solve</button>
+  <button @click="onSolve()">Solve</button>
 
 </template>
 

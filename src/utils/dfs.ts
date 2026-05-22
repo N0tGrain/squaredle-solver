@@ -1,12 +1,13 @@
 import {Cell, Grid} from "@/types/grid";
 import {getNeighbours} from "@/utils/neighbours";
+import {isPrefix, isWord} from "@/utils/trie";
 
 type PathResult = {
   word: string
   path: Cell[]
 }
 
-export function findAllPaths(grid: Grid): PathResult[] {
+export function findAllPaths(grid: Grid, trie: any): PathResult[] {
   const results: PathResult[] = []
   const size = grid.length;
   const visited = new Set<String>()
@@ -23,7 +24,12 @@ export function findAllPaths(grid: Grid): PathResult[] {
     const newWord = currentWord + cell.letter
     const newPath = [...path, cell]
 
-    if (newWord.length >= 2) {
+    if (!isPrefix(trie, newWord)) {
+      visited.delete(key(cell))
+      return
+    }
+
+    if (newWord.length >= 3 && isWord(trie, newWord)) {
       results.push({word: newWord, path: newPath})
     }
 
