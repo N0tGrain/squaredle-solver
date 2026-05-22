@@ -54,21 +54,9 @@ export function useGrid(size: number = 5) {
   }
 
   function moveToNextCell(row: number, col: number) {
-    let currentCol = col + 1
-    let currentRow = row
-
-    while (currentRow < size) {
-      while (currentCol < size) {
-        const nextCell = grid[currentRow][currentCol]
-
-        if (!nextCell.disabled) {
-          focusCell(currentRow, currentCol)
-          return
-        }
-        currentCol++
-      }
-      currentRow++
-      currentCol = 0
+    const nextCell = findNextValidCell(row, col, 0, 1)
+    if (nextCell) {
+      focusCell(nextCell.row, nextCell.col)
     }
   }
 
@@ -91,33 +79,56 @@ export function useGrid(size: number = 5) {
     }
   }
 
+  function findNextValidCell(
+    startRow: number,
+    startCol: number,
+    rowDelta: number,
+    colDelta: number,
+  ) {
+    let row = startRow;
+    let col = startCol;
+    for (let i = 0; i < size * size; i++) {
+      row = (row + rowDelta + size) % size;
+      col = (col + colDelta + size) % size;
+      const cell = grid[row][col]
+      if (!cell.disabled) {
+        return cell
+      }
+    }
+    return null
+  }
+
   function handleKeyDown(event: KeyboardEvent, cell: Cell) {
+    let nextCell: Cell | null = null;
     switch (event.key) {
       case 'ArrowUp':
         event.preventDefault()
-        focusCell(cell.row - 1, cell.col)
+        nextCell = findNextValidCell(cell.row, cell.col, -1, 0)
         break
 
       case 'ArrowDown':
         event.preventDefault()
-        focusCell(cell.row + 1, cell.col)
+        nextCell = findNextValidCell(cell.row, cell.col, 1, 0)
         break
 
       case 'ArrowLeft':
         event.preventDefault()
-        focusCell(cell.row, cell.col - 1)
+        nextCell = findNextValidCell(cell.row, cell.col, 0, -1)
         break
 
       case 'ArrowRight':
         event.preventDefault()
-        focusCell(cell.row, cell.col + 1)
+        nextCell = findNextValidCell(cell.row, cell.col, 0, 1)
         break
 
       case 'Backspace':
         if (!cell.letter) {
           moveToPreviousCell(cell.row, cell.col)
         }
-        break
+        return
+    }
+    if (nextCell) {
+      focusCell(nextCell.row, nextCell.col)
     }
   }
 
