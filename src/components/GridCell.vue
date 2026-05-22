@@ -3,7 +3,7 @@
 import type {Cell} from "@/types/grid";
 import {ref} from "vue";
 
-const props = defineProps<{cell: Cell, highlighted: boolean}>()
+const props = defineProps<{cell: Cell, highlighted?: boolean}>()
 const emit = defineEmits<{
   input: [event: Event]
   keydown: [event: KeyboardEvent]
@@ -60,8 +60,10 @@ defineExpose({element})
 
 
 .highlighted {
-  border-color: #22c55e;
-  background: #dcfce7;
+  background: #fde68a;
+  border-color: #f59e0b;
+  transform: scale(1.05);
+  transition: all 0.15s ease;
 }
 
 </style>

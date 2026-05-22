@@ -17,14 +17,25 @@ const {
 
 const highlightedCells = ref<Cell[]>([])
 const { solve } = useSolver()
+const selectedWord = ref<string | null>(null)
+const selectedPath = ref<Cell[]>([])
+const results = ref<{word: string; path: Cell[]}[]>([])
 
 function highlightNeighbours(cell: Cell) {
   highlightedCells.value = getNeighbours(grid, cell.row, cell.col)
 }
 
 function onSolve() {
-  const results = solve(grid)
-  console.log(results)
+  results.value = solve(grid)
+}
+
+function selectWord(word: string, path: Cell[]) {
+  selectedWord.value = word
+  selectedPath.value = path
+}
+
+function isInSelectedPath(cell: Cell) {
+  return selectedPath.value.some((c) => c.row === cell.row && c.col === cell.col)
 }
 
 function isHighlighted(cell: Cell) {
@@ -46,14 +57,21 @@ function isHighlighted(cell: Cell) {
         setInputRef(gridCell?.element as HTMLInputElement, cell.row, cell.col)
       }"
       :cell="cell"
-      :highlighted="isHighlighted(cell)"
-      @mouseEnter="highlightNeighbours(cell)"
+      :highlighted="isInSelectedPath(cell)"
       @input="updateLetter(cell, $event)"
       @keydown="handleKeyDown($event, cell)"
       @toggle="toggleDisabled(cell)"/>
   </div>
 
+<!--  @mouseEnter="highlightNeighbours(cell)"-->
+
   <button @click="onSolve()">Solve</button>
+
+  <div class="word-list">
+    <div v-for="result in results" :key="result.word" class="word-item" @click="selectWord(result.word, result.path)">
+      {{result.word}}
+    </div>
+  </div>
 
 </template>
 
@@ -65,6 +83,23 @@ function isHighlighted(cell: Cell) {
   gap: 10px;
   width: fit-content;
   margin: 40px auto;
+}
+
+.word-list {
+  max-height: 300px;
+  overflow: auto;
+  margin-top: 20px;
+}
+
+.word-item {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.word-item:hover {
+  background: #e5e7eb;
+  color: black;
 }
 
 </style>
