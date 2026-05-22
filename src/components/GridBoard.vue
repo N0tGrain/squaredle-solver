@@ -5,6 +5,7 @@ import GridCell from "@/components/GridCell.vue";
 import {ref} from "vue";
 import {Cell} from "@/types/grid";
 import {getNeighbours} from "@/utils/neighbours";
+import {findAllPaths} from "@/utils/dfs";
 
 const {
   grid,
@@ -26,6 +27,12 @@ function isHighlighted(cell: Cell) {
   )
 }
 
+function solve() {
+  console.log('TEST')
+  const results = findAllPaths(grid)
+  console.log('paths:', results)
+}
+
 </script>
 
 <template>
@@ -45,6 +52,8 @@ function isHighlighted(cell: Cell) {
       @keydown="handleKeyDown($event, cell)"
       @toggle="toggleDisabled(cell)"/>
   </div>
+
+  <button @click="solve()">Solve</button>
 
 </template>
 
