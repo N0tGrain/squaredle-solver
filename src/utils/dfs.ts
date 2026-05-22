@@ -11,6 +11,7 @@ export function findAllPaths(grid: Grid, trie: any): PathResult[] {
   const results: PathResult[] = []
   const size = grid.length;
   const visited = new Set<String>()
+  const seenWords = new Map<string, Cell[]>()
 
   function key(cell: Cell) {
     return `${cell.row},${cell.col}`
@@ -30,7 +31,10 @@ export function findAllPaths(grid: Grid, trie: any): PathResult[] {
     }
 
     if (newWord.length >= 3 && isWord(trie, newWord)) {
-      results.push({word: newWord, path: newPath})
+      if (!seenWords.has(newWord)) {
+        seenWords.set(newWord, newPath)
+        results.push({word: newWord, path: newPath})
+      }
     }
 
     const neighbours = getNeighbours(grid, cell.row, cell.col)
