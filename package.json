@@ -12,6 +12,8 @@
     "lint:eslint": "eslint . --fix --cache"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.59.4",
+    "@typescript-eslint/parser": "^8.59.4",
     "vue": "^3.5.32"
   },
   "devDependencies": {
