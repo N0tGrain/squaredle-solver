@@ -1,11 +1,14 @@
-import wordsRaw from '@/data/words.txt?raw'
+import { wordList } from '@/data/words'
 import {buildTrieFromWords} from "@/utils/trieBuilder"
 import {Grid} from "@/types/grid"
 import {findAllPaths} from "@/utils/dfs"
 
 export function useSolver() {
-  const wordList = wordsRaw.split('\n')
-  const trie = buildTrieFromWords(wordList)
+  const cleanedWords = wordList.map(w => w.toUpperCase())
+    .filter(w => w.length >= 4)
+    .filter(w => /^[A-Z]+$/.test(w))
+
+  const trie = buildTrieFromWords(cleanedWords)
 
   function solve(grid: Grid) {
     return findAllPaths(grid, trie)
