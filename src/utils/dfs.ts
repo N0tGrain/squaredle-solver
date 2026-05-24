@@ -10,7 +10,7 @@ type PathResult = {
 export function findAllPaths(grid: Grid, trie: any): PathResult[] {
   const results: PathResult[] = []
   const size = grid.length;
-  const visited = new Set<String>()
+  const visited = new Set<string>()
   const seenWords = new Map<string, Cell[]>()
 
   function key(cell: Cell) {
@@ -18,32 +18,29 @@ export function findAllPaths(grid: Grid, trie: any): PathResult[] {
   }
 
   function dfs(cell: Cell, currentWord: string, path: Cell[]) {
-    visited.add(key(cell))
+    const newWord = currentWord + cell.letter
 
     if (currentWord.length > 20) return
+    if (!isPrefix(trie, newWord)) return
 
-    const newWord = currentWord + cell.letter
+    const k = key(cell)
+    if (visited.has(k)) return
+    visited.add(k)
+
     const newPath = [...path, cell]
 
-    if (!isPrefix(trie, newWord)) {
-      visited.delete(key(cell))
-      return
-    }
-
-    if (newWord.length >= 3 && isWord(trie, newWord)) {
+    if (newWord.length >= 4 && isWord(trie, newWord)) {
       if (!seenWords.has(newWord)) {
         seenWords.set(newWord, newPath)
         results.push({word: newWord, path: newPath})
       }
     }
-
     const neighbours = getNeighbours(grid, cell.row, cell.col)
+
     for (const neighbour of neighbours) {
-      const k = key(neighbour)
-      if (visited.has(k)) continue
       dfs(neighbour, newWord, newPath)
     }
-    visited.delete(key(cell))
+    visited.delete(k)
   }
 
   for (let row = 0; row < size; row++) {
