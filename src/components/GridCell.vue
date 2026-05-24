@@ -61,7 +61,7 @@ defineExpose({element})
 
 .highlighted {
   background: rgba(44, 62, 80, 0.08);
-  border-color: var(--vt-c-indigo);
+  border-color: #CC5500;
   transform: translateY(-1px);
 }
 
