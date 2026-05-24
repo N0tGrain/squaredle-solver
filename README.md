@@ -1,10 +1,17 @@
 # vue-squaredle-solver
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue 3 + Vite application for solving Squaredle-style word puzzles using a local word list and in-browser solver logic.
+
+## About
+
+This project provides a small solver interface built with Vue and TypeScript. It uses a preprocessed `words.txt` word list and a solver algorithm to suggest possible solutions for the grid.
+
+> Note: solver results may be slightly inaccurate in some edge cases. This project is intended to help narrow down possibilities, but it may not always return the exact intended answer.
 
 ## Recommended IDE Setup
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- Disable Vetur if it is installed
 
 ## Recommended Browser Setup
 
@@ -14,6 +21,16 @@ This template should help get you started developing with Vue 3 in Vite.
 - Firefox:
   - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
   - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+
+## Word List Updating
+
+If you ever update `src/scripts/raw_words.txt` with a new raw word list, run the build script once to regenerate `src/data/words.txt` before using the solver:
+
+```sh
+node src/scripts/build-wordlist.js
+```
+
+This step is only required when the source raw word list changes.
 
 ## Customize configuration
 
@@ -37,7 +54,7 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint
 
 ```sh
 npm run lint
