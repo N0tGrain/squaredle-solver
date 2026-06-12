@@ -117,6 +117,14 @@ function isHighlighted(cell: Cell) {
           Clear Board
         </button>
       </div>
+
+      <div class="board-help">
+        <p>Use the arrow keys to move between tiles.</p>
+        <p>Double-click a tile to disable it.</p>
+        <p>Play the original game at
+          <a href="https://squaredle.app/" target="_blank" rel="noopener noreferrer">Squaredle</a>
+        </p>
+      </div>
     </section>
 
     <section class="result-panel">
@@ -178,6 +186,35 @@ function isHighlighted(cell: Cell) {
   margin: 0 auto;
   padding: 1rem;
   align-items: start;
+}
+
+.board-help {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  font-size: 0.9rem;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.board-help p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.board-help a {
+  color: var(--vt-c-indigo);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.board-help a:hover {
+  text-decoration: underline;
 }
 
 .board-panel, .result-panel {
