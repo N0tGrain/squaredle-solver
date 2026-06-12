@@ -171,7 +171,7 @@ function isHighlighted(cell: Cell) {
 <style scoped>
 .board-shell {
   display: grid;
-  grid-template-columns: calc(100vw - 100rem) minmax(0, 100rem);
+  grid-template-columns: minmax(500px, 650px) minmax(0, 1fr);
   gap: 1.5rem;
   width: 100%;
   max-width: 1800px;
@@ -192,14 +192,15 @@ function isHighlighted(cell: Cell) {
   position: sticky;
   top: 1rem;
   width: 100%;
-  max-width: 500px;
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(5, 1fr);
   width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: 0.85rem;
 }
 
 .board-actions {
