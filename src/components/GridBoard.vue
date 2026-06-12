@@ -184,8 +184,9 @@ function isHighlighted(cell: Cell) {
   width: 100%;
   max-width: 1800px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem 5rem;
   align-items: start;
+  box-sizing: border-box;
 }
 
 .board-help {
@@ -365,9 +366,10 @@ function isHighlighted(cell: Cell) {
 }
 
 /* Tablet */
-@media (max-width: 1100px) {
+@media (max-width: 1300px) {
   .board-shell {
     grid-template-columns: 320px minmax(0, 1fr);
+    padding: 1rem 2rem;
   }
   .word-list {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -375,9 +377,10 @@ function isHighlighted(cell: Cell) {
 }
 
 /* Mobile */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .board-shell {
     grid-template-columns: 1fr;
+    padding: 1rem;
   }
 
   .board-panel {
