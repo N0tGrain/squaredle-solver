@@ -927,6 +927,7 @@ adjutant
 adjutants
 adman
 admen
+admin
 administer
 administered
 administering
@@ -71295,6 +71296,7 @@ tattooing
 tattooist
 tattooists
 tattoos
+tatty
 taught
 taunt
 taunted
