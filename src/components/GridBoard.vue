@@ -333,7 +333,7 @@ function isHighlighted(cell: Cell) {
 
 .word-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
   gap: 0.65rem;
 }
 
@@ -348,6 +348,8 @@ function isHighlighted(cell: Cell) {
   font-size: 0.92rem;
   font-weight: 500;
   transition: transform 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
+  width: max-content;
+  min-width: 125px;
 }
 
 .word-item:hover {
